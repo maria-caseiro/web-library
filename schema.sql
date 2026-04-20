@@ -15,8 +15,7 @@ CREATE TABLE books (
     isbn TEXT UNIQUE,
     category TEXT,
     year INTEGER,
-    publisher TEXT,
-    cover TEXT
+    publisher TEXT
 );
 
 
