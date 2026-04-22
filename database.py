@@ -20,7 +20,7 @@ def get_books():
         print(f"Error: {err}")
     return books
 
-# Fech book by book_id
+# Fetch book by book_id
 def get_book_by_id(book_id):
     book = None
     try:
@@ -40,7 +40,7 @@ def add_book(title, author, isbn, category, year, publisher):
             cursor.execute(
                 """INSERT INTO books (title, author, isbn, category, year, publisher)
                 VALUES (?, ?, ?, ?, ?, ?)""",
-                (title, author, isbn, category, year, publisher)
+                (title, author, isbn, category, year, publisher,)
             )
             return cursor.lastrowid
     except sqlite3.Error as err:
@@ -55,7 +55,7 @@ def edit_book(book_id, title, author, isbn, category, year, publisher):
             cursor.execute(
                 """UPDATE books SET title = ?, author = ?, isbn = ?, category = ?, year = ?, publisher = ? 
                 WHERE book_id = ?""",
-                (title, author, isbn, category, year, publisher, book_id)
+                (title, author, isbn, category, year, publisher, book_id,)
             )
             return True
     except sqlite3.Error as err:
@@ -102,8 +102,70 @@ def update_copy_status(copy_id, status):
     try:
         with connect_db() as conn:
             cursor = conn.cursor()
-            cursor.execute("UPDATE copies SET status = ? WHERE copy_id = ?",(status, copy_id))
+            cursor.execute("UPDATE copies SET status = ? WHERE copy_id = ?",(status, copy_id,))
             return True
     except sqlite3.Error as err:
         print(f"Error: {err}")
         return False
+    
+# Fetch all loans
+def get_loans():
+    loans = []
+    try:
+        with connect_db() as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT * FROM loans")
+            loans = cursor.fetchall()
+    except sqlite3.Error as err:
+        print(f"Error: {err}")
+    return loans
+
+# Fetch active loans
+def get_active_loans():
+    loans = []
+    try:
+        with connect_db() as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT * FROM loans WHERE return_date IS NULL")
+            loans = cursor.fetchall()
+    except sqlite3.Error as err:
+        print(f"Error: {err}")
+    return loans
+
+# Fetch loan by loan_id
+def get_loan_by_id(loan_id):
+    loan = None
+    try:
+        with connect_db() as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT * FROM loans WHERE loan_id = ?", (loan_id,))
+            loan = cursor.fetchone()
+    except sqlite3.Error as err:
+        print(f"Error: {err}")
+    return loan
+
+# Create loan
+def create_loan(copy_id, reader_id, loan_date, due_date):
+    try:
+        with connect_db() as conn:
+            cursor = conn.cursor()
+            cursor.execute(
+                """INSERT INTO loans (copy_id, reader_id, loan_date, due_date)
+                VALUES (?, ?, ?, ?)""",
+                (copy_id, reader_id, loan_date, due_date,)
+            )
+            return cursor.lastrowid
+    except sqlite3.Error as err:
+        print(f"Error: {err}")
+    return None
+
+# Close loan
+def close_loan(loan_id, return_date):
+    try:
+        with connect_db() as conn:
+            cursor = conn.cursor()
+            cursor.execute("UPDATE loans SET return_date = ? WHERE loan_id = ?",(return_date, loan_id,))
+            return True
+    except sqlite3.Error as err:
+        print(f"Error: {err}")
+    return False
