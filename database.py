@@ -169,3 +169,72 @@ def close_loan(loan_id, return_date):
     except sqlite3.Error as err:
         print(f"Error: {err}")
     return False
+
+# Fetch all readers
+def get_readers():
+    readers = []
+    try:
+        with connect_db() as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT * FROM readers")
+            readers = cursor.fetchall()
+    except sqlite3.Error as err:
+        print(f"Error: {err}")
+    return readers
+
+# Fetch reader by reader_id
+def get_reader_by_id(reader_id):
+    reader = None
+    try:
+        with connect_db() as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT * FROM readers WHERE reader_id = ?", (reader_id,))
+            reader = cursor.fetchone()
+    except sqlite3.Error as err:
+        print(f"Error: {err}")
+    return reader
+
+# Add reader
+def add_reader(name, email, phone, address, location):
+    try:
+        with connect_db() as conn:
+            cursor = conn.cursor()
+            cursor.execute(
+                """INSERT INTO readers (name, email, phone, address, location)
+                VALUES (?, ?, ?, ?, ?)""",
+                (name, email, phone, address, location,)
+            )
+            return cursor.lastrowid
+    except sqlite3.Error as err:
+        print(f"Error: {err}")
+    return None
+
+# Edit reader
+def edit_reader(reader_id, name, email, phone, address, location):
+    try:
+        with connect_db() as conn:
+            cursor = conn.cursor()
+            cursor.execute(
+                """UPDATE readers SET name = ?, email = ?, phone = ?, address = ?, location = ?
+                WHERE reader_id = ?""",
+                (name, email, phone, address, location, reader_id,)
+            )
+            return True
+    except sqlite3.Error as err:
+        print(f"Error: {err}")
+        return False
+
+# Anonymize reader
+def anonymize_reader(reader_id):
+    try:
+        with connect_db() as conn:
+            cursor = conn.cursor()
+            cursor.execute(
+                """UPDATE readers SET name = 'Removed', email = NULL, phone = NULL, address = NULL, location = NULL
+                WHERE reader_id = ?""",
+                (reader_id,)
+            )
+            return True
+    except sqlite3.Error as err:
+        print(f"Error: {err}")
+        return False
