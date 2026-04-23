@@ -238,3 +238,61 @@ def anonymize_reader(reader_id):
     except sqlite3.Error as err:
         print(f"Error: {err}")
         return False
+    
+
+### DB VALIDATIONS
+
+# Verify ISBN
+def isbn_exists(isbn):
+    try:
+        with connect_db() as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT * FROM books WHERE isbn = ?", (isbn,))
+            return cursor.fetchone() is not None
+    except sqlite3.Error as err:
+        print(f"Error: {err}")
+        return False
+    
+# Verify email
+def email_exists(email):
+    try:
+        with connect_db() as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT * FROM readers WHERE email = ?", (email,))
+            return cursor.fetchone() is not None
+    except sqlite3.Error as err:
+        print(f"Error: {err}")
+        return False
+    
+# Verify copy availability
+def copy_available(copy_id):
+    try:
+        with connect_db() as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT * FROM copies WHERE status = 'available' AND copy_id = ?", (copy_id,))
+            return cursor.fetchone() is not None
+    except sqlite3.Error as err:
+        print(f"Error: {err}")
+        return False
+    
+# Verify reader active loans
+def reader_active_loans(reader_id):
+    try:
+        with connect_db() as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT * FROM loans WHERE reader_id = ? AND return_date is NULL", (reader_id,))
+            return cursor.fetchone() is not None
+    except sqlite3.Error as err:
+        print(f"Error: {err}")
+        return False
+    
+# Verify book copies
+def book_copies(book_id):
+    try:
+        with connect_db() as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT * FROM copies WHERE book_id = ? AND status = 'available'", (book_id,))
+            return cursor.fetchone() is not None
+    except sqlite3.Error as err:
+        print(f"Error: {err}")
+        return False
