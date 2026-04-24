@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="pt-pt">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Web Library</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+	<div class="form-container">
+		<form action="/login" method="POST">
+			<div class="input-container">
+				<div style="text-align: center"><img src="../static/img/logo.png"  alt="Logo" width="250" height="250"></div>
+				<input type="text" name="username" placeholder="username" required>
+				<input type="password" name="password" placeholder="password" required>
+			</div>
+			<div class="botton">
+				<button class="submit" type="submit">Enter</button>
+			</div>
+		</form>
+	</div>
+</body>
+
+</html>
