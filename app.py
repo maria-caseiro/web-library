@@ -1,7 +1,7 @@
 from flask import Flask, request, render_template, redirect, url_for, flash
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user
 from werkzeug.security import check_password_hash
-from database import connect_db
+from database import connect_db, get_books
 from dotenv import load_dotenv
 import os
 import sqlite3
@@ -9,19 +9,22 @@ import sqlite3
 # Flask app initialization
 load_dotenv()
 app = Flask(__name__)
+# Key used to sign session cookies
 app.secret_key = os.getenv("SECRET_KEY")
 
 # Login manager configuration
 login_manager = LoginManager()
+# Adds authentication manager to the app
 login_manager.init_app(app)
+# Defines route if not authenticated
 login_manager.login_view = "login"
 
-# Admin user model for flask
+# Authenticated user class that stores user_id
 class User(UserMixin):
     def __init__(self, id):
         self.id = id
 
-# Loads logged-in user
+# Restores user from session cookie
 @login_manager.user_loader
 def load_user(user_id):
     return User(user_id)
@@ -57,7 +60,8 @@ def logout():
 @app.route("/")
 @login_required
 def index():
-    return render_template("index.html")
+    books = get_books()
+    return render_template("index.html", books=books)
 
 # Server startup
 if __name__ == '__main__':
