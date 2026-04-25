@@ -1,1 +1,62 @@
-Login successful
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Web Library</title>
+	<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+</head>
+
+<body>
+	<nav class="navbar navbar-expand-lg sticky-top" style="border-bottom: 1px solid #dce8f5;">
+    <div class="container-fluid px-4">
+        <span class="navbar-brand">Web Library</span>
+        <div class="navbar-nav me-auto flex-row gap-3">
+            <a class="nav-link" href="/books">Books</a>
+            <a class="nav-link" href="/readers">Readers</a>
+            <a class="nav-link" href="/loans">Loans</a>
+        </div>
+        <a class="nav-link" href="/logout">Logout</a>
+    </div>
+	</nav>
+
+	<main>
+		<div class="page-header">
+			<h2>Books</h2>
+			<button class="btn-primary">Add Book</button>
+		</div>
+		<table>
+			<thead>
+				<tr>
+					<th>Title</th>
+					<th>Author</th>
+					<th>ISBN</th>
+					<th>Category</th>
+					<th>Year</th>
+					<th>Publisher</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for book in books %}
+				<tr>
+					<td>{{ book.title }}</td>
+					<td>{{ book.author }}</td>
+					<td>{{ book.isbn }}</td>
+					<td>{{ book.category }}</td>
+					<td>{{ book.year }}</td>
+					<td>{{ book.publisher }}</td>
+					<td><a href="/copies/{{ book.book_id }}">Copies</a></td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</main>
+</body>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+</html>
