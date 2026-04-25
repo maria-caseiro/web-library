@@ -1,10 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400&display=swap');
 
-body {
+* {
     font-family: 'Inter', sans-serif;
     font-weight: 300;
+}
+
+body {
     background-color: #ffffff;
     min-height: 100vh;
+}
+
+body.login {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -27,8 +33,7 @@ input {
     border-radius: 4px;
     padding: 16px 18px;
     font-family: 'Inter', sans-serif;
-    font-weight: 300;
-    font-size: 15px;
+    font-size: 13px;
     color: #3f5f69;
     outline: none;
     transition: border-color 0.2s;
@@ -50,7 +55,6 @@ input::placeholder {
     border: none;
     border-radius: 4px;
     font-family: 'Inter', sans-serif;
-    font-weight: 300;
     font-size: 14px;
     letter-spacing: 1px;
     cursor: pointer;
@@ -59,5 +63,96 @@ input::placeholder {
 }
 
 .submit:hover {
+    background: #5d8f9e;
+}
+
+.navbar {
+    background-color: #ffffff !important
+}
+
+.nav-link {
+    font-size: 15px !important;
+    color: #6EA8B9 !important;
+    letter-spacing: 1px;
+}
+
+.nav-link:hover {
+    color: #5d8f9e !important
+}
+
+.navbar-brand {
+    font-size: 18px !important;
+    margin-left: 10px;
+    color: #3f5f69 !important;
+    letter-spacing: 1px;
+}
+
+main {
+    padding: 40px;
+}
+
+.page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+}
+
+.page-header h2 {
+    font-size: 18px;
+    color: #3f5f69;
+    letter-spacing: 1px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+thead tr {
+    border-bottom: 1px solid #dce8f5;
+}
+
+th {
+    text-align: left;
+    padding: 10px 12px;
+    color: #6EA8B9;
+    letter-spacing: 1px;
+}
+
+td {
+    padding: 12px;
+    color: #3f5f69;
+}
+
+tr:hover td {
+    background-color: #f7fafd;
+}
+
+td a {
+    color: #6EA8B9;
+    text-decoration: none;
+    letter-spacing: 1px;
+}
+
+td a:hover {
+    color: #3f5f69;
+}
+
+.btn-primary {
+    padding: 9px 20px;
+    background: #6EA8B9;
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-primary:hover {
     background: #5d8f9e;
 }
