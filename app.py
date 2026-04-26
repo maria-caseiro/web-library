@@ -1,7 +1,7 @@
 from flask import Flask, request, render_template, redirect, url_for, flash
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user
 from werkzeug.security import check_password_hash
-from database import connect_db, get_books
+from database import connect_db, get_books, get_book_by_id, get_copies_by_book
 from dotenv import load_dotenv
 import os
 import sqlite3
@@ -62,6 +62,14 @@ def logout():
 def index():
     books = get_books()
     return render_template("index.html", books=books)
+
+# Book route
+@app.route("/books/<int:book_id>")
+@login_required
+def book(book_id):
+    book = get_book_by_id(book_id)
+    copies = get_copies_by_book(book_id)
+    return render_template("book.html", book=book, copies=copies)
 
 # Server startup
 if __name__ == '__main__':
