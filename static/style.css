@@ -111,6 +111,7 @@ table {
     font-size: 13px;
     table-layout: fixed;
     width: 100%;
+    margin-bottom: 48px;
 }
 
 thead tr {
