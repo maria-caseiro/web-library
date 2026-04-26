@@ -60,8 +60,15 @@ def logout():
 @app.route("/")
 @login_required
 def index():
-    books = get_books()
+    books = get_books()[:4]
     return render_template("index.html", books=books)
+
+# Books route
+@app.route("/books")
+@login_required
+def books():
+    books = get_books()
+    return render_template("books.html", books=books)
 
 # Book route
 @app.route("/books/<int:book_id>")
