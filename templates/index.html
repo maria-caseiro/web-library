@@ -24,6 +24,34 @@
 
 	<main>
 		<div class="page-header">
+			<h2>Active Loans</h2>
+			<button class="btn-primary">Create Loan</button>
+		</div>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 15%">Loan ID</th>
+                    <th style="width: 15%">Copy ID</th>
+                    <th style="width: 15%">Reader ID</th>
+                    <th style="width: 15%">Loan Date</th>
+                    <th style="width: 15%">Due Date</th>
+                    <th style="width: 5%">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for loan in loans %}
+                <tr>
+                    <td>{{ loan.loan_id }}</td>
+                    <td>{{ loan.copy_id }}</td>
+                    <td>{{ loan.reader_id }}</td>
+                    <td>{{ loan.loan_date }}</td>
+                    <td>{{ loan.due_date }}</td>
+                    <td>{{ "Active" if loan.return_date is none else "Returned" }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+		<div class="page-header">
 			<h2>Books</h2>
 			<button class="btn-primary">Add Book</button>
 		</div>
