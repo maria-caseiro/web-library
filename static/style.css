@@ -85,6 +85,7 @@ input::placeholder {
     margin-left: 10px;
     color: #3f5f69 !important;
     letter-spacing: 1px;
+    font-weight: 400;
 }
 
 main {
@@ -124,6 +125,7 @@ th {
 td {
     padding: 12px;
     color: #3f5f69;
+    text-transform: capitalize;
 }
 
 tr:hover td {
@@ -155,4 +157,58 @@ td a:hover {
 
 .btn-primary:hover {
     background: #5d8f9e;
+}
+
+.book-detail {
+    display: flex;
+    gap: 48px;
+    margin-bottom: 48px;
+}
+
+.book-cover img {
+    width: 190px;
+    border-radius: 4px;
+}
+
+.book-info {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.book-info h2 {
+    font-size: 20px;
+    color: #3f5f69;
+    letter-spacing: 1px;
+}
+
+.info-table th {
+    color: #6EA8B9;
+    padding: 8px 30px 8px 0;
+    letter-spacing: 1px;
+    font-size: 12px;
+    text-transform: uppercase;
+    border: none;
+}
+
+.info-table td {
+    color: #3f5f69;
+    padding: 8px 0;
+    border: none;
+}
+
+.info-table tr:hover td {
+    background: none;
+}
+
+.book-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.copies-section h3 {
+    font-size: 18px;
+    color: #3f5f69;
+    letter-spacing: 1px;
+    margin-bottom: 16px;
 }
