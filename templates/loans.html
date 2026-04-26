@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Library</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg sticky-top" style="border-bottom: 1px solid #dce8f5;">
+        <div class="container-fluid px-4">
+            <a class="navbar-brand" href="/">Web Library</a>
+            <div class="navbar-nav me-auto flex-row gap-3">
+                <a class="nav-link" href="/books">Books</a>
+                <a class="nav-link" href="/readers">Readers</a>
+                <a class="nav-link" href="/loans">Loans</a>
+            </div>
+            <a class="nav-link" href="/logout">Logout</a>
+        </div>
+    </nav>
+
+    <main>
+        <div class="page-header">
+			<h2>Loans</h2>
+			<button class="btn-primary">Create Loan</button>
+		</div>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 15%">Loan ID</th>
+                    <th style="width: 15%">Copy ID</th>
+                    <th style="width: 15%">Reader ID</th>
+                    <th style="width: 15%">Loan Date</th>
+                    <th style="width: 15%">Due Date</th>
+                    <th style="width: 5%">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for loan in loans %}
+                <tr>
+                    <td>{{ loan.loan_id }}</td>
+                    <td>{{ loan.copy_id }}</td>
+                    <td>{{ loan.reader_id }}</td>
+                    <td>{{ loan.loan_date }}</td>
+                    <td>{{ loan.due_date }}</td>
+                    <td>{{ "Active" if loan.return_date is none else "Returned" }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </main>
+</body>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+</html>
