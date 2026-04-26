@@ -1,7 +1,7 @@
 from flask import Flask, request, render_template, redirect, url_for, flash
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user
 from werkzeug.security import check_password_hash
-from database import connect_db, get_books, get_book_by_id, get_copies_by_book
+from database import connect_db, get_books, get_book_by_id, get_copies_by_book, get_active_loans, get_loans
 from dotenv import load_dotenv
 import os
 import sqlite3
@@ -61,7 +61,8 @@ def logout():
 @login_required
 def index():
     books = get_books()[:4]
-    return render_template("index.html", books=books)
+    loans = get_active_loans()[:4]
+    return render_template("index.html", books=books, loans=loans)
 
 # Books route
 @app.route("/books")
@@ -77,6 +78,13 @@ def book(book_id):
     book = get_book_by_id(book_id)
     copies = get_copies_by_book(book_id)
     return render_template("book.html", book=book, copies=copies)
+
+# Loans route
+@app.route("/loans")
+@login_required
+def loans():
+    loans = get_loans()
+    return render_template("loans.html", loans=loans)
 
 # Server startup
 if __name__ == '__main__':
