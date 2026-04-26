@@ -14,7 +14,7 @@ def get_books():
     try:
         with connect_db() as conn:
             cursor = conn.cursor()
-            cursor.execute("SELECT * FROM books")
+            cursor.execute("SELECT * FROM books ORDER BY title ASC")
             books = cursor.fetchall()
     except sqlite3.Error as err:
         print(f"Error: {err}")
@@ -114,7 +114,7 @@ def get_loans():
     try:
         with connect_db() as conn:
             cursor = conn.cursor()
-            cursor.execute("SELECT * FROM loans")
+            cursor.execute("SELECT * FROM loans ORDER BY return_date IS NOT NULL, due_date ASC")
             loans = cursor.fetchall()
     except sqlite3.Error as err:
         print(f"Error: {err}")
