@@ -176,6 +176,7 @@ td a:hover {
 .book-info {
     display: flex;
     flex-direction: column;
+    width: 350px;
     gap: 24px;
 }
 
