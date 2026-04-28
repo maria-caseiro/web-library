@@ -114,7 +114,11 @@ def get_loans():
     try:
         with connect_db() as conn:
             cursor = conn.cursor()
-            cursor.execute("SELECT * FROM loans ORDER BY return_date IS NOT NULL, due_date ASC")
+            cursor.execute(
+                """SELECT loans.*, books.title FROM loans
+                JOIN copies ON loans.copy_id = copies.copy_id JOIN books ON copies.book_id = books.book_id
+                ORDER BY loans.return_date IS NOT NULL, loans.loan_date DESC"""
+            )
             loans = cursor.fetchall()
     except sqlite3.Error as err:
         print(f"Error: {err}")
@@ -126,7 +130,11 @@ def get_active_loans():
     try:
         with connect_db() as conn:
             cursor = conn.cursor()
-            cursor.execute("SELECT * FROM loans WHERE return_date IS NULL")
+            cursor.execute(
+                """SELECT loans.*, books.title FROM loans
+                JOIN copies ON loans.copy_id = copies.copy_id JOIN books ON copies.book_id = books.book_id
+                WHERE loans.return_date IS NULL"""
+            )
             loans = cursor.fetchall()
     except sqlite3.Error as err:
         print(f"Error: {err}")
@@ -150,8 +158,8 @@ def get_loans_by_reader(reader_id):
     try:
         with connect_db() as conn:
             cursor = conn.cursor()
-            cursor.execute("""
-                SELECT loans.*, books.title FROM loans JOIN copies ON loans.copy_id = copies.copy_id
+            cursor.execute(
+                """SELECT loans.*, books.title FROM loans JOIN copies ON loans.copy_id = copies.copy_id
                 JOIN books ON copies.book_id = books.book_id WHERE loans.reader_id = ?
                 ORDER BY loans.loan_date DESC""",
                 (reader_id,)
