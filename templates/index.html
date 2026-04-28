@@ -62,25 +62,24 @@
 			<table>
 				<thead>
 					<tr>
-						<th style="width: 20%">Title</th>
+						<th style="width: 25%">Title</th>
 						<th style="width: 15%">Author</th>
-						<th style="width: 15%">ISBN</th>
-						<th style="width: 15%">Category</th>
+						<th style="width: 10%">ISBN</th>
+						<th style="width: 10%">Category</th>
 						<th style="width: 5%">Year</th>
-						<th style="width: 15%">Publisher</th>
-						<th style="width: 5%"></th>
+						<th style="width: 10%">Publisher</th>
 					</tr>
 				</thead>
 				<tbody>
 					{% for book in books %}
 					<tr>
+						<tr onclick="window.location='/books/{{ book.book_id }}'" style="cursor: pointer;">
 						<td>{{ book.title }}</td>
 						<td>{{ book.author }}</td>
 						<td>{{ book.isbn }}</td>
 						<td>{{ book.category }}</td>
 						<td>{{ book.year }}</td>
 						<td>{{ book.publisher }}</td>
-						<td><a href="/books/{{ book.book_id }}">Copies</a></td>
 					</tr>
 					{% endfor %}
 				</tbody>
