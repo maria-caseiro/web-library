@@ -189,6 +189,11 @@ td a:hover {
     letter-spacing: 1px;
 }
 
+.info-table {
+    width: 300px;
+    table-layout: auto;
+}
+
 .info-table th {
     color: #6EA8B9;
     padding: 8px 30px 8px 0;
@@ -202,6 +207,7 @@ td a:hover {
     color: #3f5f69;
     padding: 8px 0;
     border: none;
+    text-transform: none;
 }
 
 .info-table tr:hover td {
@@ -218,4 +224,25 @@ td a:hover {
     color: #3f5f69;
     letter-spacing: 1px;
     margin-bottom: 16px;
+}
+
+.reader-detail {
+    margin-bottom: 48px;
+}
+
+.reader-info {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.reader-info h2 {
+    font-size: 20px;
+    color: #3f5f69;
+    letter-spacing: 1px;
+}
+
+.reader-actions {
+    display: flex;
+    gap: 12px;
 }
