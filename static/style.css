@@ -246,3 +246,47 @@ td a:hover {
     display: flex;
     gap: 12px;
 }
+
+.form-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 360px;
+    margin-bottom: 24px;
+}
+
+.form-fields input {
+    padding: 14px 20px;
+    font-size: 13px;
+}
+
+.form-error {
+    color: #e07070;
+    font-size: 13px;
+    margin-bottom: 16px;
+}
+
+.btn-secondary {
+    padding: 9px 20px;
+    background: transparent;
+    color: #6EA8B9;
+    border: 1px solid #6EA8B9;
+    border-radius: 4px;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+}
+
+.btn-secondary:hover {
+    background: #6EA8B9;
+    color: #ffffff;
+}
+
+.form-actions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
