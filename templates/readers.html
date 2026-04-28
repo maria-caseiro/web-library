@@ -41,6 +41,7 @@
 			<tbody>
 				{% for reader in readers %}
 				<tr>
+					<tr onclick="window.location='/readers/{{ reader.reader_id }}'" style="cursor: pointer;">
 					<td>{{ reader.reader_id }}</td>
 					<td>{{ reader.name }}</td>
                     <td style="text-transform: none">{{ reader.email }}</td>
