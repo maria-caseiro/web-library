@@ -144,6 +144,23 @@ def get_loan_by_id(loan_id):
         print(f"Error: {err}")
     return loan
 
+# Fetch loans by reader_id
+def get_loans_by_reader(reader_id):
+    loans = []
+    try:
+        with connect_db() as conn:
+            cursor = conn.cursor()
+            cursor.execute("""
+                SELECT loans.*, books.title FROM loans JOIN copies ON loans.copy_id = copies.copy_id
+                JOIN books ON copies.book_id = books.book_id WHERE loans.reader_id = ?
+                ORDER BY loans.loan_date DESC""",
+                (reader_id,)
+            )
+            loans = cursor.fetchall()
+    except sqlite3.Error as err:
+        print(f"Error: {err}")
+    return loans
+
 # Create loan
 def create_loan(copy_id, reader_id, loan_date, due_date):
     try:
