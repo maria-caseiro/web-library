@@ -2,7 +2,7 @@ from flask import Flask, request, render_template, redirect, url_for, flash
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user
 from werkzeug.security import check_password_hash
 from database import (connect_db, get_books, get_book_by_id, get_copies_by_book, get_active_loans, get_loans, get_readers,
-get_reader_by_id, get_loans_by_reader, add_reader, email_exists, edit_reader, add_book, isbn_exists)
+get_reader_by_id, get_loans_by_reader, add_reader, email_exists, edit_reader, add_book, isbn_exists, edit_book)
 from dotenv import load_dotenv
 import os
 import sqlite3
@@ -154,6 +154,25 @@ def book_add():
         book_id = add_book(title, author, isbn, category, year, publisher)
         return redirect(url_for("book", book_id=book_id))
     return render_template("add_book.html")
+
+# Edit book
+@app.route("/books/<int:book_id>/edit", methods=["GET", "POST"])
+@login_required
+def book_edit(book_id):
+    book = get_book_by_id(book_id)
+    if request.method == "POST":
+        title = request.form.get("title")
+        author = request.form.get("author")
+        isbn = request.form.get("isbn")
+        category = request.form.get("category")
+        year = request.form.get("year")
+        publisher = request.form.get("publisher")
+        if isbn_exists(isbn) and isbn != book["isbn"]:
+            flash("Book already exists.")
+            return render_template("edit_book.html", book=book)
+        edit_book(book_id,title, author, isbn, category, year, publisher)
+        return redirect(url_for("book", book_id=book_id))
+    return render_template("edit_book.html", book=book)
 
 # Server startup
 if __name__ == '__main__':
