@@ -2,7 +2,7 @@ from flask import Flask, request, render_template, redirect, url_for, flash
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user
 from werkzeug.security import check_password_hash
 from database import (connect_db, get_books, get_book_by_id, get_copies_by_book, get_active_loans, get_loans, get_readers,
-get_reader_by_id, get_loans_by_reader, add_reader, email_exists, edit_reader)
+get_reader_by_id, get_loans_by_reader, add_reader, email_exists, edit_reader, add_book, isbn_exists)
 from dotenv import load_dotenv
 import os
 import sqlite3
@@ -136,6 +136,24 @@ def reader_edit(reader_id):
         edit_reader(reader_id, name, email, phone, address, location)
         return redirect(url_for("reader", reader_id=reader_id))
     return render_template("edit_reader.html", reader=reader)
+
+# Add book
+@app.route("/books/add", methods=["GET", "POST"])
+@login_required
+def book_add():
+    if request.method == "POST":
+        title = request.form.get("title")
+        author = request.form.get("author")
+        isbn = request.form.get("isbn")
+        category = request.form.get("category")
+        year = request.form.get("year")
+        publisher = request.form.get("publisher")
+        if isbn_exists(isbn):
+            flash("Book already exists.")
+            return render_template("add_book.html")
+        book_id = add_book(title, author, isbn, category, year, publisher)
+        return redirect(url_for("book", book_id=book_id))
+    return render_template("add_book.html")
 
 # Server startup
 if __name__ == '__main__':
