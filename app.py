@@ -2,7 +2,7 @@ from flask import Flask, request, render_template, redirect, url_for, flash
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user
 from werkzeug.security import check_password_hash
 from database import (connect_db, get_books, get_book_by_id, get_copies_by_book, get_active_loans, get_loans, get_readers,
-get_reader_by_id, get_loans_by_reader, add_reader, email_exists)
+get_reader_by_id, get_loans_by_reader, add_reader, email_exists, edit_reader)
 from dotenv import load_dotenv
 import os
 import sqlite3
@@ -118,6 +118,24 @@ def reader_add():
         reader_id = add_reader(name, email, phone, address, location)
         return redirect(url_for("reader", reader_id=reader_id))
     return render_template("add_reader.html")
+
+# Edit reader
+@app.route("/readers/<int:reader_id>/edit", methods=["GET", "POST"])
+@login_required
+def reader_edit(reader_id):
+    reader = get_reader_by_id(reader_id)
+    if request.method == "POST":
+        name = request.form.get("name")
+        email = request.form.get("email")
+        phone = request.form.get("phone")
+        address = request.form.get("address")
+        location = request.form.get("location")
+        if email_exists(email) and email != reader["email"]:
+            flash("Email already exists.")
+            return render_template("edit_reader.html", reader=reader)
+        edit_reader(reader_id, name, email, phone, address, location)
+        return redirect(url_for("reader", reader_id=reader_id))
+    return render_template("edit_reader.html", reader=reader)
 
 # Server startup
 if __name__ == '__main__':
