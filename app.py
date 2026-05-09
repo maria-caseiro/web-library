@@ -3,7 +3,7 @@ from flask_login import LoginManager, UserMixin, login_user, login_required, log
 from werkzeug.security import check_password_hash
 from database import (connect_db, get_books, get_book_by_id, get_copies_by_book, get_active_loans, get_loans, get_readers,
 get_reader_by_id, get_loans_by_reader, add_reader, email_exists, edit_reader, add_book, isbn_exists, edit_book, add_copy,
-reader_overdue_loans, book_copies, get_available_copy, create_loan, update_copy_status)
+reader_overdue_loans, book_copies, get_available_copy, create_loan, update_copy_status, get_loan_by_id, close_loan)
 from dotenv import load_dotenv
 from datetime import date, timedelta
 import os
@@ -115,6 +115,18 @@ def loan_create():
         update_copy_status(copy_id, "loaned")
         flash("Loan created successfully.")
     return render_template("create_loan.html", readers=readers, books=books)
+
+# Close loan
+@app.route("/loans/<int:loan_id>/close")
+@login_required
+def loan_close(loan_id):
+    loan = get_loan_by_id(loan_id)
+
+    if loan:
+        return_date = date.today().isoformat()
+        close_loan(loan_id, return_date)
+        update_copy_status(loan["copy_id"], "available")
+    return redirect(request.referrer)
 
 # Readers route
 @app.route("/readers")
