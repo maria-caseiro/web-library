@@ -311,12 +311,12 @@ def copy_available(copy_id):
         print(f"Error: {err}")
         return False
     
-# Verify reader active loans
-def reader_active_loans(reader_id):
+# Verify reader overdue loans
+def reader_overdue_loans(reader_id):
     try:
         with connect_db() as conn:
             cursor = conn.cursor()
-            cursor.execute("SELECT * FROM loans WHERE reader_id = ? AND return_date is NULL", (reader_id,))
+            cursor.execute("SELECT * FROM loans WHERE reader_id = ? AND return_date is NULL AND due_date < date('now')", (reader_id,))
             return cursor.fetchone() is not None
     except sqlite3.Error as err:
         print(f"Error: {err}")
