@@ -63,9 +63,8 @@ def logout():
 @app.route("/")
 @login_required
 def index():
-    books = get_books()[:4]
-    loans = get_active_loans()[:4]
-    return render_template("index.html", books=books, loans=loans)
+    loans = get_active_loans()
+    return render_template("index.html", loans=loans)
 
 # Books route
 @app.route("/books")
