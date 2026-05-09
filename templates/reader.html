@@ -74,19 +74,24 @@
                 </thead>
                 <tbody>
                     {% for loan in loans %}
-                    <tr>
+                    <tr {% if not loan['return_date'] and loan['due_date'] < today %}class="overdue" {% endif %}>
                         <td>{{ loan.loan_id }}</td>
                         <td>{{ loan.copy_id }}</td>
                         <td>{{ loan.title }}</td>
                         <td>{{ loan.loan_date }}</td>
                         <td>{{ loan.due_date }}</td>
                         <td>{{ loan.return_date or "-" }}</td>
-                        <td>{{ "Active" if loan.return_date is none else "Returned" }}</td>
-                        {% if not loan['return_date'] %}
-                        <td><a href="/loans/{{ loan['loan_id'] }}/close">Close</a></td>
-                        {% else %}
-                        <td>-</td>
-                        {% endif %}
+                        {% if loan['return_date'] %}
+                        <td>Returned</td>
+                        {% elif loan['due_date'] < today %} <td>Overdue</td>
+                            {% else %}
+                            <td>Active</td>
+                            {% endif %}
+                            {% if not loan['return_date'] %}
+                            <td><a href="/loans/{{ loan['loan_id'] }}/close">Close</a></td>
+                            {% else %}
+                            <td>-</td>
+                            {% endif %}
                     </tr>
                     {% endfor %}
                 </tbody>

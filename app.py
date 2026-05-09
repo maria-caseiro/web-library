@@ -64,7 +64,7 @@ def logout():
 @login_required
 def index():
     loans = get_active_loans()
-    return render_template("index.html", loans=loans)
+    return render_template("index.html", loans=loans, today=date.today().isoformat())
 
 # Books route
 @app.route("/books")
@@ -86,7 +86,7 @@ def book(book_id):
 @login_required
 def loans():
     loans = get_loans()
-    return render_template("loans.html", loans=loans)
+    return render_template("loans.html", loans=loans, today=date.today().isoformat())
 
 # Create loan
 @app.route("/loans/create", methods=["GET", "POST"])
@@ -141,7 +141,7 @@ def readers():
 def reader(reader_id):
     reader = get_reader_by_id(reader_id)
     loans = get_loans_by_reader(reader_id)
-    return render_template("reader.html", reader=reader, loans=loans)
+    return render_template("reader.html", reader=reader, loans=loans, today=date.today().isoformat())
 
 # Add reader
 @app.route("/readers/add", methods=["GET", "POST"])
