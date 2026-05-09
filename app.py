@@ -2,8 +2,10 @@ from flask import Flask, request, render_template, redirect, url_for, flash
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user
 from werkzeug.security import check_password_hash
 from database import (connect_db, get_books, get_book_by_id, get_copies_by_book, get_active_loans, get_loans, get_readers,
-get_reader_by_id, get_loans_by_reader, add_reader, email_exists, edit_reader, add_book, isbn_exists, edit_book, add_copy)
+get_reader_by_id, get_loans_by_reader, add_reader, email_exists, edit_reader, add_book, isbn_exists, edit_book, add_copy,
+reader_overdue_loans, book_copies, get_available_copy, create_loan, update_copy_status)
 from dotenv import load_dotenv
+from datetime import date, timedelta
 import os
 import sqlite3
 
@@ -86,6 +88,34 @@ def book(book_id):
 def loans():
     loans = get_loans()
     return render_template("loans.html", loans=loans)
+
+# Create loan
+@app.route("/loans/create", methods=["GET", "POST"])
+@login_required
+def loan_create():
+    readers = get_readers()
+    books = get_books()
+    if request.method == "POST":
+        reader_id = request.form.get("reader_id")
+        book_id = request.form.get("book_id")
+
+        if reader_overdue_loans(reader_id):
+            flash("Reader with overdue loans.")
+            return render_template("create_loan.html", readers=readers, books=books)
+        if not book_copies(book_id):
+            flash("No available copies for this book.")
+            return render_template("create_loan.html", readers=readers, books=books)
+        
+        copy = get_available_copy(book_id)
+        copy_id = copy["copy_id"]
+
+        loan_date = date.today().isoformat()
+        due_date = (date.today() + timedelta(days=30)).isoformat()
+
+        create_loan(copy_id, reader_id, loan_date, due_date)
+        update_copy_status(copy_id, "loaned")
+        flash("Loan created successfully.")
+    return render_template("create_loan.html", readers=readers, books=books)
 
 # Readers route
 @app.route("/readers")
