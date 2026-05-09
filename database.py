@@ -86,6 +86,17 @@ def get_copies_by_book(book_id):
         print(f"Error: {err}")
     return copies
 
+# Fetch one available book copy
+def get_available_copy(book_id):
+    try:
+        with connect_db() as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT copy_id FROM copies WHERE book_id = ? AND status = 'available' LIMIT 1", (book_id,))
+            return cursor.fetchone()
+    except sqlite3.Error as err:
+        print(f"Error: {err}")
+        return None
+
 # Add copy
 def add_copy(book_id):
     try:
