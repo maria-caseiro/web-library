@@ -64,11 +64,12 @@
                     <tr>
                         <th style="width: 5%">Loan ID</th>
                         <th style="width: 5%">Copy ID</th>
-                        <th style="width: 25%">Title</th>
+                        <th style="width: 20%">Title</th>
                         <th style="width: 10%">Loan Date</th>
                         <th style="width: 10%">Due Date</th>
                         <th style="width: 10%">Return Date</th>
                         <th style="width: 5%">Status</th>
+                        <th style="width: 5%"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -81,6 +82,11 @@
                         <td>{{ loan.due_date }}</td>
                         <td>{{ loan.return_date or "-" }}</td>
                         <td>{{ "Active" if loan.return_date is none else "Returned" }}</td>
+                        {% if not loan['return_date'] %}
+                        <td><a href="/loans/{{ loan['loan_id'] }}/close">Close</a></td>
+                        {% else %}
+                        <td>-</td>
+                        {% endif %}
                     </tr>
                     {% endfor %}
                 </tbody>
