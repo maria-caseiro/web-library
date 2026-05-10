@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block content %}
+
+<main>
+    <div class="page-header">
+        <h2>Search</h2>
+    </div>
+
+    {% if results is not none %}
+        {% if results %}
+        <table>
+            <thead>
+                <tr>
+                    {% if type == "books" %}
+                    <th style="width: 25%">Title</th>
+                    <th style="width: 15%">Author</th>
+                    <th style="width: 10%">ISBN</th>
+                    <th style="width: 10%">Category</th>
+                    <th style="width: 5%">Year</th>
+                    <th style="width: 10%">Publisher</th>
+                    {% else %}
+                    <th style="width: 10%">Reader ID</th>
+                    <th style="width: 15%">Name</th>
+                    <th style="width: 15%">Email</th>
+                    <th style="width: 15%">Phone</th>
+                    <th style="width: 20%">Address</th>
+                    <th style="width: 10%">Location</th>
+                    {% endif %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for result in results %}
+                <tr>
+                    {% if type == "books" %}
+                    <td><a href="/books/{{ result.book_id }}">{{ result.title }}</a></td>
+                    <td>{{ result.author }}</td>
+                    <td>{{ result.isbn }}</td>
+                    <td>{{ result.category }}</td>
+                    <td>{{ result.year }}</td>
+                    <td>{{ result.publisher }}</td>
+                    {% else %}
+                    <td>{{ result.reader_id }}</td>
+                    <td><a href="/readers/{{ result.reader_id }}">{{ result.name }}</a></td>
+                    <td style="text-transform: none">{{ result.email }}</td>
+                    <td>{{ result.phone }}</td>
+                    <td>{{ result.address }}</td>
+                    <td>{{ result.location }}</td>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p class="par">No results for "{{ query }}".</p>
+        {% endif %}
+    {% endif %}
+
+</main>
+
+{% endblock %}
