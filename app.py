@@ -4,7 +4,7 @@ from werkzeug.security import check_password_hash
 from database import (connect_db, get_books, get_book_by_id, get_copies_by_book, get_active_loans, get_loans, get_readers,
 get_reader_by_id, get_loans_by_reader, add_reader, email_exists, edit_reader, add_book, isbn_exists, edit_book, add_copy,
 reader_overdue_loans, book_copies, get_available_copy, create_loan, update_copy_status, get_loan_by_id, close_loan,
-anonymize_reader, reader_active_loans)
+anonymize_reader, reader_active_loans, search_books, search_readers)
 from dotenv import load_dotenv
 from datetime import date, timedelta
 import os
@@ -239,6 +239,19 @@ def copy_add(book_id):
         add_copy(book_id)
         flash("Copy added to databse.")
     return redirect(url_for("book", book_id=book_id))
+
+# Search
+@app.route("/search")
+@login_required
+def search():
+    query = request.args.get("search", "")
+    type = request.args.get("type", "books")
+    results = []
+    if type == "books":
+        results = search_books(query)
+    elif type == "readers":
+        results = search_readers(query)
+    return render_template("search.html", results=results, query=query, type=type)
 
 # Server startup
 if __name__ == '__main__':
