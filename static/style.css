@@ -294,3 +294,9 @@ tr.overdue td {
     gap: 12px;
     align-items: center;
 }
+
+.par {
+    color: #3f5f69;
+    font-size: 15px;
+    margin-bottom: 24px;
+}
