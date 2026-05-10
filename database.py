@@ -322,6 +322,17 @@ def reader_overdue_loans(reader_id):
         print(f"Error: {err}")
         return False
     
+# Verify reader active loans
+def reader_active_loans(reader_id):
+    try:
+        with connect_db() as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT * FROM loans WHERE reader_id = ? AND return_date is NULL", (reader_id,))
+            return cursor.fetchone() is not None
+    except sqlite3.Error as err:
+        print(f"Error: {err}")
+        return False
+    
 # Verify book copies
 def book_copies(book_id):
     try:
