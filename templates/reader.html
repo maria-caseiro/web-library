@@ -49,8 +49,14 @@
                         <td>{{ reader.location }}</td>
                     </tr>
                 </table>
+                {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                <p class="form-error">{{ messages[0] }}</p>
+                {% endif %}
+                {% endwith %}
                 <div class="reader-actions">
                     <button class="btn-primary" onclick="window.location='/readers/{{ reader.reader_id }}/edit'">Edit</button>
+                    <button class="btn-primary" onclick="window.location='/readers/{{ reader.reader_id }}/delete'">Delete</button>
                 </div>
             </div>
         </div>
