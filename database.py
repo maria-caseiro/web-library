@@ -343,3 +343,25 @@ def book_copies(book_id):
     except sqlite3.Error as err:
         print(f"Error: {err}")
         return False
+    
+### SEARCH QUERIES
+
+def search_books(query):
+    try:
+        with connect_db() as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT * FROM books WHERE title LIKE ? OR author LIKE ? OR isbn LIKE ?", (f"{query}%", f"{query}%", f"{query}%"))
+            return cursor.fetchall()
+    except sqlite3.Error as err:
+        print(f"Error: {err}")
+        return []
+
+def search_readers(query):
+    try:
+        with connect_db() as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT * FROM readers WHERE name LIKE ? OR email LIKE ?", (f"{query}%", f"{query}%"))
+            return cursor.fetchall()
+    except sqlite3.Error as err:
+        print(f"Error: {err}")
+        return []
