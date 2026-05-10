@@ -1,50 +1,25 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %}
+{% block content %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ reader.name }}</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='img/mini-logo.png') }}">
-</head>
-
-<body>
-    <nav class="navbar navbar-expand-lg sticky-top" style="border-bottom: 1px solid #dce8f5;">
-        <div class="container-fluid px-4">
-            <a class="navbar-brand" href="/">Web Library</a>
-            <div class="navbar-nav me-auto flex-row gap-3">
-                <a class="nav-link" href="/books">Books</a>
-                <a class="nav-link" href="/readers">Readers</a>
-                <a class="nav-link" href="/loans">Loans</a>
-            </div>
-            <a class="nav-link" href="/logout">Logout</a>
+<main>
+    <div class="page-header">
+        <h2>Anonymize Reader</h2>
+    </div>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <p class="form-error">{{ messages[0] }}</p>
+    {% endif %}
+    {% endwith %}
+    <div class="par">
+        <p>Permanently anonymize reader <strong>{{ reader['name'] }}</strong>?</p>
+        <p>All personal data will be anonymized. Action cannot be undone.</p>
+    </div>
+    <form method="POST">
+        <div class="form-actions">
+            <button class="btn-primary">Confirm</button>
+            <a href="/readers/{{ reader.reader_id }}" class="btn-secondary">Cancel</a>
         </div>
-    </nav>
+    </form>
+</main>
 
-    <main>
-        <div class="page-header">
-            <h2>Anonymize Reader</h2>
-        </div>
-        {% with messages = get_flashed_messages() %}
-        {% if messages %}
-        <p class="form-error">{{ messages[0] }}</p>
-        {% endif %}
-        {% endwith %}
-        <div class="par">
-            <p>Permanently anonymize reader <strong>{{ reader['name'] }}</strong>?</p>
-            <p>All personal data will be anonymized. Action cannot be undone.</p>
-        </div>
-        <form method="POST">
-            <div class="form-actions">
-                <button class="btn-primary">Confirm</button>
-                <a href="/readers/{{ reader.reader_id }}" class="btn-secondary">Cancel</a>
-            </div>
-        </form>
-    </main>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-
-</html>
+{% endblock %}

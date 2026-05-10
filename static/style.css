@@ -297,6 +297,35 @@ tr.overdue td {
 
 .par {
     color: #3f5f69;
-    font-size: 15px;
+    font-size: 14px;
     margin-bottom: 24px;
+}
+
+.search {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.search select {
+    padding: 9px 12px;
+    width: 90px;
+    font-size: 12px;
+    border: 0px;
+    color: #6EA8B9;
+    letter-spacing: 1px;
+    outline: none;
+}
+.search input {
+    padding: 9px 20px;
+    width: 300px;
+    font-size: 13px;
+    border: 1px solid #dce8f5;
+    border-radius: 4px;
+    color: #3f5f69;
+    outline: none;
+}
+
+.search input:focus {
+    border-color: #6EA8B9;
 }
