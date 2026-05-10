@@ -3,7 +3,8 @@ from flask_login import LoginManager, UserMixin, login_user, login_required, log
 from werkzeug.security import check_password_hash
 from database import (connect_db, get_books, get_book_by_id, get_copies_by_book, get_active_loans, get_loans, get_readers,
 get_reader_by_id, get_loans_by_reader, add_reader, email_exists, edit_reader, add_book, isbn_exists, edit_book, add_copy,
-reader_overdue_loans, book_copies, get_available_copy, create_loan, update_copy_status, get_loan_by_id, close_loan)
+reader_overdue_loans, book_copies, get_available_copy, create_loan, update_copy_status, get_loan_by_id, close_loan,
+anonymize_reader, reader_active_loans)
 from dotenv import load_dotenv
 from datetime import date, timedelta
 import os
@@ -177,6 +178,20 @@ def reader_edit(reader_id):
         edit_reader(reader_id, name, email, phone, address, location)
         return redirect(url_for("reader", reader_id=reader_id))
     return render_template("edit_reader.html", reader=reader)
+
+# Anonymize reader
+@app.route("/readers/<int:reader_id>/delete", methods=["GET", "POST"])
+@login_required
+def reader_anonymize(reader_id):
+    reader = get_reader_by_id(reader_id)
+    if request.method == "POST":
+        if reader_active_loans(reader_id):
+            flash("Reader with active loans.")
+            return render_template("delete_reader.html", reader = reader)
+        anonymize_reader(reader_id)
+        flash("Reader data anonymized.")
+        return redirect(url_for("reader", reader_id=reader_id))
+    return render_template("delete_reader.html", reader=reader)
 
 # Add book
 @app.route("/books/add", methods=["GET", "POST"])
