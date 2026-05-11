@@ -61,18 +61,6 @@ def edit_book(book_id, title, author, isbn, category, year, publisher):
     except sqlite3.Error as err:
         print(f"Error: {err}")
         return False
-    
-# Fetch all copies
-def get_copies():
-    copies = []
-    try:
-        with connect_db() as conn:
-            cursor = conn.cursor()
-            cursor.execute("SELECT * FROM copies")
-            copies = cursor.fetchall()
-    except sqlite3.Error as err:
-        print(f"Error: {err}")
-    return copies
 
 # Fetch copies by book
 def get_copies_by_book(book_id):
