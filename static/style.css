@@ -152,6 +152,14 @@ tr.overdue td {
     color: #e07070;
 }
 
+tr.overdue a {
+    color: #eca4a4;
+}
+
+tr.overdue a:hover {
+    color: #e07070;
+}
+
 .btn-primary {
     padding: 9px 20px;
     background: #6EA8B9;
