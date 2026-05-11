@@ -124,6 +124,17 @@ def update_copy_status(copy_id, status):
         print(f"Error: {err}")
         return False
     
+# Change copy condition
+def update_copy_condition(copy_id, condition):
+    try:
+        with connect_db() as conn:
+            cursor = conn.cursor()
+            cursor.execute("UPDATE copies SET condition = ? WHERE copy_id = ?",(condition, copy_id))
+            return True
+    except sqlite3.Error as err:
+        print(f"Error: {err}")
+        return False
+    
 # Fetch all loans
 def get_loans():
     loans = []
