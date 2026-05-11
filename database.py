@@ -126,7 +126,7 @@ def get_loans():
         with connect_db() as conn:
             cursor = conn.cursor()
             cursor.execute(
-                """SELECT loans.*, books.title FROM loans
+                """SELECT loans.*, books.title, books.book_id FROM loans
                 JOIN copies ON loans.copy_id = copies.copy_id JOIN books ON copies.book_id = books.book_id
                 ORDER BY loans.return_date IS NOT NULL, loans.due_date ASC"""
             )
@@ -142,7 +142,7 @@ def get_active_loans():
         with connect_db() as conn:
             cursor = conn.cursor()
             cursor.execute(
-                """SELECT loans.*, books.title FROM loans
+                """SELECT loans.*, books.title, books.book_id FROM loans
                 JOIN copies ON loans.copy_id = copies.copy_id JOIN books ON copies.book_id = books.book_id
                 WHERE loans.return_date IS NULL ORDER BY loans.due_date ASC"""
             )
@@ -170,7 +170,7 @@ def get_loans_by_reader(reader_id):
         with connect_db() as conn:
             cursor = conn.cursor()
             cursor.execute(
-                """SELECT loans.*, books.title FROM loans JOIN copies ON loans.copy_id = copies.copy_id
+                """SELECT loans.*, books.title, books.book_id FROM loans JOIN copies ON loans.copy_id = copies.copy_id
                 JOIN books ON copies.book_id = books.book_id WHERE loans.reader_id = ?
                 ORDER BY loans.return_date IS NOT NULL, loans.due_date ASC""",
                 (reader_id,)
