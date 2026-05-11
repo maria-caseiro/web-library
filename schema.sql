@@ -15,8 +15,7 @@ CREATE TABLE books (
     isbn TEXT UNIQUE,
     category TEXT,
     year INTEGER,
-    publisher TEXT
-);
+    publisher TEXT);
 
 
 -- readers definition
@@ -36,7 +35,7 @@ CREATE TABLE readers (
 CREATE TABLE copies (
     copy_id INTEGER PRIMARY KEY AUTOINCREMENT,
     book_id INTEGER NOT NULL,
-    status TEXT NOT NULL DEFAULT 'available',
+    status TEXT NOT NULL DEFAULT 'available', condition TEXT DEFAULT 'good',
     FOREIGN KEY (book_id) REFERENCES books(book_id)
 );
 
