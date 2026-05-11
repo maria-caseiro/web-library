@@ -4,7 +4,7 @@ from werkzeug.security import check_password_hash
 from database import (connect_db, get_books, get_book_by_id, get_copies_by_book, get_active_loans, get_loans, get_readers,
 get_reader_by_id, get_loans_by_reader, add_reader, email_exists, edit_reader, add_book, isbn_exists, edit_book, add_copy,
 reader_overdue_loans, book_copies, get_available_copy, create_loan, update_copy_status, get_loan_by_id, close_loan,
-anonymize_reader, reader_active_loans, search_books, search_readers)
+anonymize_reader, reader_active_loans, search_books, search_readers, copy_available, update_copy_condition)
 from dotenv import load_dotenv
 from datetime import date, timedelta
 import os
@@ -238,6 +238,17 @@ def copy_add(book_id):
     if book:
         add_copy(book_id)
         flash("Copy added to databse.")
+    return redirect(url_for("book", book_id=book_id))
+
+# Mark copy as damaged
+@app.route("/books/<int:book_id>/copies/<int:copy_id>/damage")
+@login_required
+def damaged_copy(book_id, copy_id):
+    if not copy_available(copy_id):
+        flash("Copy currently loaned.")
+        return redirect(url_for("book", book_id=book_id))
+    update_copy_status(copy_id, 'unavailable')
+    update_copy_condition(copy_id, 'damaged')
     return redirect(url_for("book", book_id=book_id))
 
 # Search
