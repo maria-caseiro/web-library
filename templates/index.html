@@ -24,9 +24,9 @@
 				{% for loan in loans %}
 				<tr {% if not loan['return_date'] and loan['due_date'] < today %}class="overdue" {% endif %}>
 					<td>{{ loan.loan_id }}</td>
-					<td>{{ loan.reader_id }}</td>
+					<td><a href="/readers/{{ loan.reader_id }}">{{ loan.reader_id }}</a></td>
 					<td>{{ loan.copy_id }}</td>
-					<td>{{ loan.title }}</td>
+					<td><a href="/books/{{ loan.book_id }}">{{ loan.title }}</a></td>
 					<td>{{ loan.loan_date }}</td>
 					<td>{{ loan.due_date }}</td>
 					{% if loan['return_date'] %}

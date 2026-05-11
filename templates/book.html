@@ -57,7 +57,13 @@
                 {% for copy in copies %}
                 <tr>
                     <td>{{ copy.copy_id }}</td>
-                    <td>{{ copy.status }}</td>
+                    <td>
+                        {% if copy.status == 'loaned' and copy.reader_id %}
+                        <a href="/readers/{{ copy.reader_id }}">{{ copy.status }}</a>
+                        {% else %}
+                        {{ copy.status }}
+                        {% endif %}
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>
