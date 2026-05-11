@@ -49,19 +49,29 @@
         <table>
             <thead>
                 <tr>
-                    <th>Copy ID</th>
-                    <th>Status</th>
+                    <th style="width: 15%">Copy ID</th>
+                    <th style="width: 15%">Condition</th>
+                    <th style="width: 15%">Status</th>
+                    <th style="width: 5%"></th>
                 </tr>
             </thead>
             <tbody>
                 {% for copy in copies %}
                 <tr>
                     <td>{{ copy.copy_id }}</td>
+                    <td>{{ copy.condition }}</td>
                     <td>
                         {% if copy.status == 'loaned' and copy.reader_id %}
                         <a href="/readers/{{ copy.reader_id }}">{{ copy.status }}</a>
+                        {% elif copy.condition == 'damaged' %}
+                        unavailable
                         {% else %}
                         {{ copy.status }}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if copy.condition != 'damaged' %}
+                        <a href="/books/{{ book.book_id }}/copies/{{ copy.copy_id }}/damage">Mark Damaged</a>
                         {% endif %}
                     </td>
                 </tr>
