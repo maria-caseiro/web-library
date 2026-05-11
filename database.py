@@ -80,7 +80,12 @@ def get_copies_by_book(book_id):
     try:
         with connect_db() as conn:
             cursor = conn.cursor()
-            cursor.execute("SELECT * FROM copies WHERE book_id = ?", (book_id,))
+            cursor.execute(
+                """SELECT copies.*, loans.reader_id FROM copies
+                LEFT JOIN loans ON copies.copy_id = loans.copy_id AND loans.return_date IS NULL
+                WHERE copies.book_id = ?""",
+                (book_id,)
+            )
             copies = cursor.fetchall()
     except sqlite3.Error as err:
         print(f"Error: {err}")
