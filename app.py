@@ -22,6 +22,7 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 # Defines route if not authenticated
 login_manager.login_view = "login"
+login_manager.login_message = None
 
 # Authenticated user class that stores user_id
 class User(UserMixin):
