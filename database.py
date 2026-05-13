@@ -222,6 +222,18 @@ def get_readers():
         print(f"Error: {err}")
     return readers
 
+# Fetch active readers
+def get_active_readers():
+    readers = []
+    try:
+        with connect_db() as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT * FROM readers WHERE name != 'Removed'")
+            readers = cursor.fetchall()
+    except sqlite3.Error as err:
+        print(f"Error: {err}")
+    return readers
+
 # Fetch reader by reader_id
 def get_reader_by_id(reader_id):
     reader = None
