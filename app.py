@@ -4,7 +4,7 @@ from werkzeug.security import check_password_hash
 from database import (connect_db, get_books, get_book_by_id, get_copies_by_book, get_active_loans, get_loans, get_readers,
 get_reader_by_id, get_loans_by_reader, add_reader, email_exists, edit_reader, add_book, isbn_exists, edit_book, add_copy,
 reader_overdue_loans, book_copies, get_available_copy, create_loan, update_copy_status, get_loan_by_id, close_loan,
-anonymize_reader, reader_active_loans, search_books, search_readers, copy_available, update_copy_condition)
+anonymize_reader, reader_active_loans, search_books, search_readers, copy_available, update_copy_condition, get_active_readers)
 from dotenv import load_dotenv
 from datetime import date, timedelta
 import os
@@ -94,7 +94,7 @@ def loans():
 @app.route("/loans/create", methods=["GET", "POST"])
 @login_required
 def loan_create():
-    readers = get_readers()
+    readers = get_active_readers()
     books = get_books()
     if request.method == "POST":
         reader_id = request.form.get("reader_id")
