@@ -1,7 +1,7 @@
 from flask import Flask, request, render_template, redirect, url_for, flash
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user
 from werkzeug.security import check_password_hash
-from database import (connect_db, get_books, get_book_by_id, get_copies_by_book, get_active_loans, get_loans, get_readers,
+from database import (get_admin, get_books, get_book_by_id, get_copies_by_book, get_active_loans, get_loans, get_readers,
 get_reader_by_id, get_loans_by_reader, add_reader, email_exists, edit_reader, add_book, isbn_exists, edit_book, add_copy,
 reader_overdue_loans, book_copies, get_available_copy, create_loan, update_copy_status, get_loan_by_id, close_loan,
 anonymize_reader, reader_active_loans, search_books, search_readers, copy_available, update_copy_condition, get_active_readers)
@@ -40,18 +40,11 @@ def login():
     if request.method == "POST":
         username = request.form.get("username")
         password = request.form.get("password")
-        try:
-            with connect_db() as conn:
-                cursor = conn.cursor()
-                cursor.execute("SELECT * FROM admin WHERE username = ?", (username,))
-                admin = cursor.fetchone()
-            if admin and check_password_hash(admin["password_hash"], password):
-                login_user(User(admin["username"]))
-                return redirect(url_for("index"))
-            flash("Invalid credentials")
-        except sqlite3.Error as err:
-            print(f"Error: {err}")
-            flash("Database error")
+        admin = get_admin(username)
+        if admin and check_password_hash(admin["password_hash"], password):
+            login_user(User(admin["username"]))
+            return redirect(url_for("index"))
+        flash("Invalid credentials.")
     return render_template("login.html")
 
 # Logout route
