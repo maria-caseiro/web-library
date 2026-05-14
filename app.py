@@ -8,7 +8,6 @@ anonymize_reader, reader_active_loans, search_books, search_readers, copy_availa
 from dotenv import load_dotenv
 from datetime import date, timedelta
 import os
-import sqlite3
 
 # Flask app initialization
 load_dotenv()
@@ -116,8 +115,7 @@ def loan_create():
 @login_required
 def loan_close(loan_id):
     loan = get_loan_by_id(loan_id)
-
-    if loan:
+    if loan and loan["return_date"] is None:
         return_date = date.today().isoformat()
         close_loan(loan_id, return_date)
         update_copy_status(loan["copy_id"], "available")
