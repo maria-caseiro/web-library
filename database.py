@@ -8,6 +8,17 @@ def connect_db():
 
 ### SQLITE FUNCTION QUERIES
 
+# Fetch admin by username
+def get_admin(username):
+    try:
+        with connect_db() as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT * FROM admin WHERE username = ?", (username,))
+            return cursor.fetchone()
+    except sqlite3.Error as err:
+        print(f"Error: {err}")
+        return None
+
 # Fetch all books
 def get_books():
     books = []
