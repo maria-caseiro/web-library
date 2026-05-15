@@ -2,24 +2,31 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Web Library</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-  <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='img/mini-logo.png') }}">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Web Library</title>
+	<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+	<link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='img/mini-logo.png') }}">
 </head>
 
 <body class="login">
 	<div class="form-container">
 		<form action="/login" method="POST">
 			<div class="input-container">
-				<div style="text-align: center"><img src="../static/img/logo.png"  alt="Logo" width="250" height="250"></div>
+				<div style="text-align: center"><img src="../static/img/logo.png" alt="Logo" width="250" height="250"></div>
 				<input type="text" name="username" placeholder="username" required>
 				<input type="password" name="password" placeholder="password" required>
 			</div>
 			<div class="botton">
 				<button class="submit" type="submit">Enter</button>
 			</div>
+			{% with messages = get_flashed_messages() %}
+			<center>
+				{% if messages %}
+				<p class="form-error">{{ messages[0] }}</p>
+				{% endif %}
+				{% endwith %}
+			</center>
 		</form>
 	</div>
 </body>
